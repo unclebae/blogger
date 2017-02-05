@@ -20,6 +20,7 @@ jar {
 }
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
 	mavenCentral()
@@ -27,6 +28,8 @@ repositories {
 
 
 dependencies {
+	def querydslVersion = "4.1.4"
+
 	compile('org.springframework.boot:spring-boot-starter-aop')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-hateoas')
@@ -34,8 +37,50 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("com.google.guava:guava:19.0")
+	compile('commons-collections:commons-collections:3.2.2')
+	compile ("com.querydsl:querydsl-core:$querydslVersion")
+	compile ("com.querydsl:querydsl-apt:$querydslVersion")
+	compile ("com.querydsl:querydsl-jpa:$querydslVersion")
+	compile ('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.6')
 	runtime('mysql:mysql-connector-java')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
 }
+
+def queryDslOutput = file("src/main/java/generated/")
+
+sourceSets {
+	main {
+		java {
+			srcDir "generated/"
+		}
+	}
+}
+
+clean {
+	delete queryDslOutput
+}
+
+task generateQueryDSL(type: JavaCompile, group: 'build') {
+	doFirst {
+		if (!queryDslOutput.exists()) {
+			logger.info("Creating `$queryDslOutput` directory")
+
+			if (!queryDslOutput.mkdirs()) {
+				throw new InvalidUserDataException("Unable to create `$queryDslOutput` directory")
+			}
+		}
+	}
+
+	source = sourceSets.main.java
+	classpath = configurations.compile
+	options.compilerArgs = [
+			"-proc:only",
+			"-processor",
+			"com.querydsl.apt.jpa.JPAAnnotationProcessor"
+	]
+	destinationDir = queryDslOutput
+}
+
+compileTestJava.dependsOn(generateQueryDSL)

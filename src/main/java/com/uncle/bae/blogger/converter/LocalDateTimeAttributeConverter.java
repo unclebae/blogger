@@ -1,4 +1,4 @@
-package com.uncle.bae.blogger.blog.converter;
+package com.uncle.bae.blogger.converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

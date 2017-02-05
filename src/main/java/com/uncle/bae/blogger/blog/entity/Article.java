@@ -3,6 +3,7 @@ package com.uncle.bae.blogger.blog.entity;
 import com.google.common.collect.Lists;
 import com.uncle.bae.blogger.blog.type.ArticleStatusType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,28 +13,30 @@ import java.util.List;
  * Created by KIDO on 2017. 2. 1..
  */
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "article")
 public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
     @Column( name = "title")
     private String title;
 
-    @Column( name = "content")
-    private String content;
+    @Column( name = "contents")
+    private String contents;
 
     @Column( name = "readCount")
-    private int readCount;
+    private Integer readCount;
 
     @Column( name = "agreeCount")
-    private int agreeCount;
+    private Integer agreeCount;
 
     @Column( name = "disAgreeCount")
-    private int disAgreeCount;
+    private Integer disAgreeCount;
 
     @Column( name = "readGroup")
     private Long readGroup;
@@ -56,10 +59,9 @@ public class Article {
     @Column( name = "modifiedBy")
     private String modifiedBy;
 
-    @ManyToOne
-    @JoinColumn(name = "id")
-    @Column( name = "categoryId")
-    private Category category;
+//    @ManyToOne
+//    @JoinColumn(name = "id", insertable = false, updatable = false)
+//    private Category category;
 
     @OneToMany(mappedBy = "article")
     private List<Attachment> attachments = Lists.newArrayList();

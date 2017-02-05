@@ -1,6 +1,7 @@
 package com.uncle.bae.blogger.blog.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,17 +13,18 @@ import java.util.Set;
  * Created by KIDO on 2017. 2. 1..
  */
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "comments")
 public class Comments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "id")
-    @Column(name = "articleId")
+    @JoinColumn(name = "id", insertable = false, updatable = false)
     private Article article;
 
     @Column(name = "comment")
@@ -50,7 +52,7 @@ public class Comments {
     private String modifiedBy;
 
     @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "parentCommentsId")
+    @JoinColumn(name = "parentCommentsId", insertable = false, updatable = false)
     private Comments comments;
 
     @OneToMany(mappedBy = "comments")
