@@ -7,6 +7,8 @@ import com.uncle.bae.blogger.blog.dto.AttachmentDTO;
 import com.uncle.bae.blogger.blog.entity.Article;
 import com.uncle.bae.blogger.blog.entity.Attachment;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,8 @@ import java.util.stream.Collectors;
 /**
  * Created by KIDO on 2017. 2. 5..
  */
-@Data
+@Getter
+@Setter
 @Service
 public class ArticleDTOEntityMapperService {
 
@@ -27,7 +30,12 @@ public class ArticleDTOEntityMapperService {
         }
 
         List<Attachment> attachments = articleDTO.getAttachments().stream()
-                .map((item) -> BeanCopy.copy(item, Attachment.class))
+                .map((item) -> {
+                    Attachment copyedAttachment = BeanCopy.copy(item, Attachment.class);
+                    copyedAttachment.setArticle(copyedArticle);
+
+                    return copyedAttachment;
+                })
                 .collect(Collectors.toList());
 
         copyedArticle.setAttachments(attachments);

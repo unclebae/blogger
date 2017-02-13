@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.uncle.bae.blogger.blog.type.ArticleStatusType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.List;
  * Created by KIDO on 2017. 2. 1..
  */
 @Data
+@ToString(exclude = "attachments")
 @NoArgsConstructor
 @Entity
 @Table(name = "article")
@@ -20,7 +22,7 @@ public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "articleId")
     private Long id;
 
     @Column( name = "title")
@@ -39,9 +41,11 @@ public class Article {
     private Integer disAgreeCount;
 
     @Column( name = "readGroup")
+
     private Long readGroup;
 
     @Column( name = "status")
+    @Enumerated(EnumType.STRING)
     private ArticleStatusType status;
 
     @Column( name = "tags")
@@ -63,7 +67,7 @@ public class Article {
 //    @JoinColumn(name = "id", insertable = false, updatable = false)
 //    private Category category;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
     private List<Attachment> attachments = Lists.newArrayList();
 
     public void addAttachment(Attachment attachment) {

@@ -20,11 +20,11 @@ public class Comments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "commentId")
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "articleId", insertable = false, updatable = false)
     private Article article;
 
     @Column(name = "comment")

@@ -18,7 +18,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "categoryId")
     private Long id;
 
     @Column(name = "categoryName")
@@ -28,6 +28,7 @@ public class Category {
     private String categoryDescription;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private ArticleStatusType status;
 
     @Column(name = "createdAt")
