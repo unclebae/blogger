@@ -48,12 +48,12 @@ dependencies {
 	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
 }
 
-def queryDslOutput = file("src/main/java/generated/")
+def queryDslOutput = file("target/generated-sources/java")
 
 sourceSets {
 	main {
 		java {
-			srcDir "generated/"
+			srcDir "src/"
 		}
 	}
 }

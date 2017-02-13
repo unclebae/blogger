@@ -7,4 +7,6 @@ import com.uncle.bae.blogger.blog.dto.ArticleDTO;
  */
 public interface ArticleService {
     ArticleDTO postArticle(ArticleDTO article);
+
+    ArticleDTO getArticleById(Long articleId);
 }

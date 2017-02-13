@@ -5,10 +5,7 @@ import com.uncle.bae.blogger.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by KIDO on 2017. 2. 5..
@@ -26,5 +23,10 @@ public class ArticleController {
 
         ResponseEntity<ArticleDTO> response = new ResponseEntity<ArticleDTO>(articleDTO, HttpStatus.OK);
         return response;
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ArticleDTO articleById(@PathVariable("id") Long id) {
+        return articleService.getArticleById(id);
     }
 }

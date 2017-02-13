@@ -27,4 +27,11 @@ public class ArticleServiceImpl implements ArticleService {
 
         return mapperService.convertAllToArticleDTO(savedArticle);
     }
+
+    @Override
+    public ArticleDTO getArticleById(Long articleId) {
+        Article articleEntity = articleRepository.getArticleById(articleId);
+
+        return mapperService.convertAllToArticleDTO(articleEntity);
+    }
 }
